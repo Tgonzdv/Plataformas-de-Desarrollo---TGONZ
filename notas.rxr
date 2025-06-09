@@ -1,0 +1,14 @@
+﻿usuarios van a poder listar pizzas   pizzas.json
+usuarios van a poder agregar/quitar pizzas a usu favortios  favoritos.json
+usuarios van a poder agregar/quitar a un carrito las pizzas  carrito.json
+usuarios van a agregar/cancelar pizzas a un pediudo  pedidos.json
+ 
+
+admin va a poder crear/eliminar usuarios   users.json
+admin va a poder agregar/quitar pizza pizzas.json
+admin va a poder ver usuarios  users.json
+admin va a poder ver pedidos   pedidos.json
+admin va a poder aceptar/cancelar pedidos  pedidos.json
+
+
+
