@@ -16,7 +16,7 @@ export default function Login() {
         );
         if (user) {
             setError("");
-            // Redirige según el rol
+            
             if (user.role === "admin") {
                 navigate("/admin");
             } else {
