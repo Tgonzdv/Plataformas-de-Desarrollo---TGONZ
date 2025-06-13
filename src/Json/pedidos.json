@@ -1,0 +1,46 @@
+﻿[
+  {
+    "orderId": 1,
+    "userId": 2,
+    "items": [
+      {
+        "nombre": "Margarita",
+        "cantidad": 2
+      }
+    ],
+    "total": 300000,
+    "fecha": "2025-06-13"
+  },
+  {
+    "orderId": 2,
+    "userId": 2,
+    "items": [
+      {
+        "nombre": "Pepperoni",
+        "cantidad": 1
+      },
+      {
+        "nombre": "Vegetariana",
+        "cantidad": 1
+      }
+    ],
+    "total": 330000,
+    "fecha": "2025-06-12"
+  },
+  {
+    "orderId": 3,
+    "userId": 2,
+    "items": [
+      {
+        "nombre": "Cuatro Quesos",
+        "cantidad": 1
+      },
+      {
+        "nombre": "Hawaiana",
+        "cantidad": 2
+      }
+    ],
+    "total": 480000,
+    "fecha": "2025-06-11"
+  }
+]

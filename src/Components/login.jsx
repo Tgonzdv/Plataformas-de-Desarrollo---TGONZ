@@ -1,11 +1,13 @@
 ﻿import React, { useState } from "react"
-import users from "./users.json"
-import "./login.css"
+import { useNavigate } from "react-router-dom"
+import users from "../Json/users.json"
+import "../login.css"
 
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -14,7 +16,12 @@ export default function Login() {
         );
         if (user) {
             setError("");
-            alert(`Bienvenido ${user.role}: ${user.username}`);
+            // Redirige según el rol
+            if (user.role === "admin") {
+                navigate("/admin");
+            } else {
+                navigate("/user");
+            }
         } else {
             setError("Usuario o contraseña incorrectos");
         }
@@ -24,14 +31,13 @@ export default function Login() {
         <main className="login">
             <header>
                 <img
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                    src={require("../logi.png")}
                     alt="Login Icon"
-                    width={64}
-                    height={64}
-                    style={{ marginBottom: 16 }}
+                    width={290}
+                    height={245}
+                    style={{ marginBottom: 5 }}
                 />
                 <h1>Iniciar sesión</h1>
-                <p className="login-subtitle">Accede a tu cuenta para continuar</p>
             </header>
             <form onSubmit={handleSubmit} aria-label="Formulario de inicio de sesión" autoComplete="on">
                 <div className="login-field">

@@ -1,12 +1,14 @@
 ﻿[
   {
+    "id": 1,
     "username": "admin",
     "password": "admin123",
-    "role": "administrador"
+    "role": "admin"
   },
   {
+    "id": 2,
     "username": "jorge",
     "password": "cliente123",
-    "role": "usuario"
+    "role": "user"
   }
 ]
