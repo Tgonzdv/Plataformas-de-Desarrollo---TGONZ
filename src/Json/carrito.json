@@ -1,1 +1,18 @@
-﻿
+﻿{
+    "userId": 2,
+    "items": [
+        {
+            "id": 101,
+            "nombre": "Pizza Margarita",
+            "cantidad": 1,
+            "precio": 1200
+        },
+        {
+            "id": 102,
+            "nombre": "Pizza Pepperoni",
+            "cantidad": 2,
+            "precio": 1500
+        }
+    ],
+    "total": 4200
+}
