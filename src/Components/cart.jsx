@@ -1,6 +1,6 @@
 ﻿import React from "react";
 
-function Cart({ items, onRemove }) {
+export function Cart({ items, onRemove }) {
     return (
         <div className="cart">
             <h2>Carrito</h2>
@@ -15,5 +15,3 @@ function Cart({ items, onRemove }) {
         </div>
     );
 }
-
-export default Cart;
