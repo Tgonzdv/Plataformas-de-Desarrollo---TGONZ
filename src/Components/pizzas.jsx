@@ -1,91 +1,55 @@
-﻿import React, { useState } from "react";
+﻿import React from "react";
 import PizzasData from "../Json/pizzas.json";
 
-const Pizzas = () => {
-    const [favoritos, setFavoritos] = useState([]);
-    const [pizzas] = useState(PizzasData);
-
-    const handleAgregarFavorito = (nombre) => {
-        if (!favoritos.includes(nombre)) {
-            setFavoritos([...favoritos, nombre]);
-        }
-    };
+export default function Pizzas({ favoritos = [], onAgregarFavorito }) {
+    const pizzas = PizzasData;
 
     return (
-        <section
-            style={{
-                background: "#f8f8f8",
-                borderRadius: 10,
-                padding: 24,
-                marginBottom: 32,
-                boxShadow: "0 2px 8px #0001",
-            }}
-        >
-            <h3
-                style={{
-                    color: "#e67e22",
-                    borderBottom: "1px solid #eee",
-                    paddingBottom: 8,
-                }}
-            >
-                Lista de Pizzas
-            </h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
-                {pizzas.map((pizza, idx) => (
-                    <li
-                        key={idx}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", justifyContent: "center" }}>
+            {pizzas.map((pizza) => {
+                const isFavorito = favoritos.includes(pizza.nombre);
+                return (
+                    <div
+                        key={pizza.nombre}
                         style={{
-                            marginBottom: 18,
-                            padding: 12,
-                            borderRadius: 8,
                             background: "#fff",
-                            boxShadow: "0 1px 4px #0001",
+                            borderRadius: "12px",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                            padding: "24px",
+                            width: "280px",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            transition: "transform 0.2s",
                         }}
                     >
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
-                            <span style={{ fontWeight: 600, fontSize: 18 }}>
-                                {pizza.nombre}
-                            </span>
-                            <span style={{ color: "#27ae60", fontWeight: 500 }}>
-                                ${pizza.precio}
-                            </span>
-                        </div>
-                        <div style={{ color: "#555", marginTop: 4 }}>
+                        <h4 style={{ margin: "0 0 12px 0", color: "#d35400", fontSize: "1.5rem" }}>
+                            {pizza.nombre}
+                        </h4>
+                        <p style={{ color: "#555", marginBottom: "20px", textAlign: "center" }}>
                             {pizza.descripcion}
-                        </div>
+                        </p>
                         <button
-                            onClick={() => handleAgregarFavorito(pizza.nombre)}
-                            disabled={favoritos.includes(pizza.nombre)}
+                            onClick={() => !isFavorito && onAgregarFavorito(pizza.nombre)}
+                            disabled={isFavorito}
                             style={{
-                                marginTop: 8,
-                                background: favoritos.includes(pizza.nombre)
-                                    ? "#ccc"
-                                    : "#e67e22",
+                                background: isFavorito ? "#bdc3c7" : "#27ae60",
                                 color: "#fff",
                                 border: "none",
-                                borderRadius: 5,
-                                padding: "6px 16px",
-                                cursor: favoritos.includes(pizza.nombre)
-                                    ? "not-allowed"
-                                    : "pointer",
-                                fontWeight: 500,
+                                borderRadius: "6px",
+                                padding: "10px 20px",
+                                cursor: isFavorito ? "not-allowed" : "pointer",
+                                fontWeight: "bold",
+                                fontSize: "1rem",
+                                boxShadow: "0 1px 4px rgba(39,174,96,0.15)",
+                                transition: "background 0.2s",
                             }}
                         >
-                            {favoritos.includes(pizza.nombre)
-                                ? "En Favoritos"
-                                : "Agregar a Favorito"}
+                            {isFavorito ? "Agregado" : "Agregar a Favoritos"}
                         </button>
-                    </li>
-                ))}
-            </ul>
-        </section>
+                    </div>
+                );
+            })}
+        </div>
     );
-};
-
-export default Pizzas;
+}

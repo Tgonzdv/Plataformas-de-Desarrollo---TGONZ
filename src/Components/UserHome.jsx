@@ -3,13 +3,30 @@ import favoritosData from "../Json/favoritos.json";
 import PizzasData from "../Json/pizzas.json";
 import carritoData from "../Json/carrito.json";
 import Pizzas from './pizzas';
+import Favoritos from './favoritos';
+import Cart from './cart';
+
+
+
 export default function UserHome() {
   // Filtrar por userid 2 que es cliente Jorge
   const user = favoritosData.find(u => u.user_id === 2);
 
   // Estados
   const [favoritos, setFavoritos] = useState(user?.favoritos || []);
-  const [carrito] = useState(Array.isArray(carritoData) ? carritoData : carritoData.carrito || []);
+  // Buscar el carrito del usuario con user_id 2
+  const userCarrito = Array.isArray(carritoData)
+    ? carritoData.find(u => u.user_id === 2)
+    : carritoData;
+  const [carrito] = useState(userCarrito?.carrito || []);
+
+   
+ 
+
+
+
+
+
 
   const pizzas = PizzasData;
 
@@ -35,8 +52,20 @@ export default function UserHome() {
     guardarFavoritosEnJson(nuevosFavoritos);
   };
 
-  // Calcular total del carrito
-  const totalCarrito = Array.isArray(carrito) ? carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0) : 0;
+
+
+
+
+
+
+console.log("userCarrito:", userCarrito);
+ 
+
+
+
+
+
+
 
   return (
     <div style={{ maxWidth: 1100, margin: "40px auto", fontFamily: "Segoe UI, Arial, sans-serif", position: "relative" }}>
@@ -47,55 +76,18 @@ export default function UserHome() {
        
 
 
-    <Pizzas />
 
+    <Pizzas onAgregarFavorito={handleAgregarFavorito} />
 
+   <Favoritos
+  favoritos={favoritos}
+  onEliminarFavorito={handleEliminarFavorito}
+  pizzas={pizzas}
+/>
 
+<Cart items={userCarrito.items}  />
 
-
-
-       
-
-        <section style={{ background: "#f8f8f8", borderRadius: 10, padding: 24, boxShadow: "0 2px 8px #0001" }}>
-          <h3 style={{ color: "#e74c3c", borderBottom: "1px solid #eee", paddingBottom: 8 }}>Mis Favoritos</h3>
-          {favoritos.length === 0 ? (
-            <p style={{ color: "#888", fontStyle: "italic" }}>No tienes favoritos.</p>
-          ) : (
-            <ul style={{ listStyle: "none", padding: 0 }}>
-              {favoritos.map((nombre, idx) => {
-                const pizza = pizzas.find(p => p.nombre === nombre);
-                return (
-                  <li key={idx} style={{ marginBottom: 18, padding: 12, borderRadius: 8, background: "#fff", boxShadow: "0 1px 4px #0001" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontWeight: 600, fontSize: 18 }}>{nombre}</span>
-                      {pizza && (
-                        <span style={{ color: "#27ae60", fontWeight: 500 }}>${pizza.precio}</span>
-                      )}
-                    </div>
-                    {pizza && (
-                      <div style={{ color: "#555", marginTop: 4 }}>{pizza.descripcion}</div>
-                    )}
-                    <button
-                      onClick={() => handleEliminarFavorito(nombre)}
-                      style={{
-                        marginTop: 8,
-                        background: "#e74c3c",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: 5,
-                        padding: "6px 16px",
-                        cursor: "pointer",
-                        fontWeight: 500
-                      }}
-                    >
-                      Eliminar de Favoritos
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
+ 
       </div>
 
       {/* Carrito a la derecha */}
@@ -109,3 +101,4 @@ export default function UserHome() {
     </div>
   );
 }
+
