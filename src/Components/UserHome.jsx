@@ -76,7 +76,7 @@ const handleAgregarCarrito = (pizza) => {
 
 
 
-      <div style={{ maxWidth: 1100, margin: "40px auto", fontFamily: "Segoe UI, Arial, sans-serif", position: "relative" }}>
+      <div style={{ maxWidth: 1500, margin: "40px auto", fontFamily: "Segoe UI, Arial, sans-serif", position: "relative" }}>
         {/* Contenido principal */}
         <div style={{ display: "flex", alignItems: "flex-start" }}>
           <div style={{ width: "65%" }}>
