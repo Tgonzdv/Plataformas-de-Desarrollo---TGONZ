@@ -5,14 +5,14 @@
             "id": 101,
             "nombre": "Pizza Margarita",
             "cantidad": 1,
-            "precio": 1200
+            "precio": 15000
         },
         {
             "id": 102,
             "nombre": "Pizza Pepperoni",
             "cantidad": 2,
-            "precio": 1500
+            "precio": 17000
         }
     ],
-    "total": 4200
+    "total": 49000
 }

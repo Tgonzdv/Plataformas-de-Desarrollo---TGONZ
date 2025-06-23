@@ -1,25 +1,30 @@
 ﻿[
     {
+        "id": 1,
         "nombre": "Margarita",
         "precio": 150000,
         "descripcion": "Pizza clásica con salsa de tomate, mozzarella y albahaca fresca."
     },
     {
+        "id": 2,
         "nombre": "Pepperoni",
         "precio": 170000,
         "descripcion": "Pizza con salsa de tomate, mozzarella y abundante pepperoni."
     },
     {
+        "id": 3,
         "nombre": "Cuatro Quesos",
         "precio": 180000,
         "descripcion": "Pizza con mezcla de mozzarella, gorgonzola, parmesano y queso de cabra."
     },
     {
+        "id": 4,
         "nombre": "Hawaiana",
         "precio": 150000,
         "descripcion": "Pizza con salsa de tomate, mozzarella, jamón y piña."
     },
     {
+        "id": 5,
         "nombre": "Vegetariana",
         "precio": 160000,
         "descripcion": "Pizza con salsa de tomate, mozzarella, pimientos, champiñones y aceitunas."

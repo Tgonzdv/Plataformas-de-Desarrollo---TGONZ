@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import PizzasData from "../Json/pizzas.json";
 
-export default function Pizzas({ favoritos = [], onAgregarFavorito }) {
+export default function Pizzas({ favoritos = [], onAgregarFavorito, onAgregarCarrito }) {
     const pizzas = PizzasData;
 
     return (
@@ -21,14 +21,35 @@ export default function Pizzas({ favoritos = [], onAgregarFavorito }) {
                             flexDirection: "column",
                             alignItems: "center",
                             transition: "transform 0.2s",
+                            marginTop: "24px", // agregado margin top
                         }}
                     >
                         <h4 style={{ margin: "0 0 12px 0", color: "#d35400", fontSize: "1.5rem" }}>
                             {pizza.nombre}
                         </h4>
-                        <p style={{ color: "#555", marginBottom: "20px", textAlign: "center" }}>
+                        <p style={{ color: "#555", marginBottom: "12px", textAlign: "center" }}>
                             {pizza.descripcion}
                         </p>
+                        <p style={{ color: "#16a085", fontWeight: "bold", marginBottom: "20px", fontSize: "1.1rem" }}>
+                            Precio: ${pizza.precio}
+                        </p>
+                        <button
+                            onClick={() => onAgregarCarrito(pizza)}
+                            style={{
+                                background: "#2980b9",
+                                color: "#fff",
+                                border: "none",
+                                borderRadius: "6px",
+                                padding: "10px 20px",
+                                cursor: "pointer",
+                                fontWeight: "bold",
+                                fontSize: "1rem",
+                                marginTop: "10px"
+                            }}
+                        >
+                            Agregar al carrito
+                        </button>
+                        <br />
                         <button
                             onClick={() => !isFavorito && onAgregarFavorito(pizza.nombre)}
                             disabled={isFavorito}

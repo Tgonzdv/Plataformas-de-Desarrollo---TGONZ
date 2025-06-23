@@ -18,8 +18,7 @@ export default function UserHome() {
   const userCarrito = Array.isArray(carritoData)
     ? carritoData.find(u => u.user_id === 2)
     : carritoData;
-  const [carrito] = useState(userCarrito?.carrito || []);
-
+ const [carrito, setCarrito] = useState(userCarrito?.items || []);
    
  
 
@@ -47,24 +46,54 @@ export default function UserHome() {
     setFavoritos(nuevosFavoritos);
     guardarFavoritosEnJson(nuevosFavoritos);
   };
-
-
+const handleRemoveCarrito = (id) => {
+  setCarrito(carrito.filter(item => item.id !== id));
+};
+const handleAgregarCarrito = (pizza) => {
+  // Busca si ya está en el carrito
+  const existe = carrito.find(item => item.id === pizza.id);
+  let nuevoCarrito;
+  if (existe) {
+    // Si ya está, suma cantidad
+    nuevoCarrito = carrito.map(item =>
+      item.id === pizza.id
+        ? { ...item, cantidad: item.cantidad + 1 }
+        : item
+    );
+  } else {
+    // Si no está, agrega con cantidad 1
+    nuevoCarrito = [...carrito, { ...pizza, cantidad: 1 }];
+  }
+  setCarrito(nuevoCarrito);
+};
 
 
   return (
     <>
       <Nav onLogout={() => console.log("Cerrar sesión")} />
 
+
+
+
+
       <div style={{ maxWidth: 1100, margin: "40px auto", fontFamily: "Segoe UI, Arial, sans-serif", position: "relative" }}>
         {/* Contenido principal */}
         <div style={{ display: "flex", alignItems: "flex-start" }}>
           <div style={{ width: "65%" }}>
-            <h2 style={{ textAlign: "center", color: "#2c3e50" }}>Bienvenido, Jorge</h2>
+            <h2 style={{ textAlign: "center", color: "#2c3e50" }}> Bienvenido, Jorge , a tu tienda de Pizzas favorita</h2>
 
-       
-       
-       
-            <Pizzas onAgregarFavorito={handleAgregarFavorito} />
+           
+    
+    
+    
+    
+    
+    
+        <Pizzas
+  favoritos={favoritos}
+  onAgregarFavorito={handleAgregarFavorito}
+  onAgregarCarrito={handleAgregarCarrito}
+/>
             <br /><br />
 
       
@@ -79,7 +108,8 @@ export default function UserHome() {
         
         
           <div style={{ width: "35%", marginLeft: 24 }}>
-            <Cart items={userCarrito.items} />
+         <Cart items={carrito} onRemove={handleRemoveCarrito} />
+
           </div>
 
 
