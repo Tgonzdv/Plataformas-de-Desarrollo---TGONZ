@@ -5,7 +5,7 @@ import carritoData from "../Json/carrito.json";
 import Pizzas from './pizzas';
 import Favoritos from './favoritos';
 import Cart from './cart';
-
+import Nav from './nav';
 
 
 export default function UserHome() {
@@ -22,10 +22,6 @@ export default function UserHome() {
 
    
  
-
-
-
-
 
 
   const pizzas = PizzasData;
@@ -55,50 +51,43 @@ export default function UserHome() {
 
 
 
-
-
-
-console.log("userCarrito:", userCarrito);
- 
-
-
-
-
-
-
-
   return (
-    <div style={{ maxWidth: 1100, margin: "40px auto", fontFamily: "Segoe UI, Arial, sans-serif", position: "relative" }}>
-      {/* Contenido principal */}
-      <div style={{ width: "65%", float: "left" }}>
-        <h2 style={{ textAlign: "center", color: "#2c3e50" }}>Bienvenido, Jorge</h2>
+    <>
+      <Nav onLogout={() => console.log("Cerrar sesión")} />
+
+      <div style={{ maxWidth: 1100, margin: "40px auto", fontFamily: "Segoe UI, Arial, sans-serif", position: "relative" }}>
+        {/* Contenido principal */}
+        <div style={{ display: "flex", alignItems: "flex-start" }}>
+          <div style={{ width: "65%" }}>
+            <h2 style={{ textAlign: "center", color: "#2c3e50" }}>Bienvenido, Jorge</h2>
 
        
+       
+       
+            <Pizzas onAgregarFavorito={handleAgregarFavorito} />
+            <br /><br />
+
+      
+      
+            <Favoritos
+              favoritos={favoritos}
+              onEliminarFavorito={handleEliminarFavorito}
+              pizzas={pizzas}
+            />
+          </div>
+
+        
+        
+          <div style={{ width: "35%", marginLeft: 24 }}>
+            <Cart items={userCarrito.items} />
+          </div>
 
 
 
-    <Pizzas onAgregarFavorito={handleAgregarFavorito} />
-
-   <Favoritos
-  favoritos={favoritos}
-  onEliminarFavorito={handleEliminarFavorito}
-  pizzas={pizzas}
-/>
-
-<Cart items={userCarrito.items}  />
-
- 
+        </div>
+        <div style={{ clear: "both" }} />
       </div>
-
-      {/* Carrito a la derecha */}
-     
-
-
-
-
-
-      <div style={{ clear: "both" }} />
-    </div>
+    </>
   );
 }
 
