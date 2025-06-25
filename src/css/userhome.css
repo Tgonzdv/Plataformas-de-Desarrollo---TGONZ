@@ -1,0 +1,29 @@
+﻿.userhome-container {
+  max-width: 1500px;
+  margin: 40px auto;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  position: relative;
+}
+
+.userhome-main {
+  display: flex;
+  align-items: flex-start;
+}
+
+.userhome-left {
+  width: 65%;
+}
+
+.userhome-title {
+  text-align: center;
+  color: #2c3e50;
+}
+
+.userhome-right {
+  width: 35%;
+  margin-left: 24px;
+}
+
+.userhome-clear {
+  clear: both;
+}

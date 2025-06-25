@@ -1,7 +1,7 @@
-﻿import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import users from "../Json/users.json"
-import "../login.css"
+﻿import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import users from "../Json/users.json";
+import "../css/login.css";
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -16,7 +16,6 @@ export default function Login() {
         );
         if (user) {
             setError("");
-            
             if (user.role === "admin") {
                 navigate("/admin");
             } else {
@@ -35,12 +34,14 @@ export default function Login() {
                     alt="Login Icon"
                     width={290}
                     height={245}
-                    style={{ marginBottom: 5 }}
                 />
                 <h1>Iniciar sesión</h1>
             </header>
+        
+        
+        
             <form onSubmit={handleSubmit} aria-label="Formulario de inicio de sesión" autoComplete="on">
-                <div className="login-field">
+                <div>
                     <label htmlFor="username">Usuario</label>
                     <input
                         type="text"
@@ -54,7 +55,7 @@ export default function Login() {
                         autoComplete="username"
                     />
                 </div>
-                <div className="login-field">
+                <div>
                     <label htmlFor="password">Contraseña</label>
                     <input
                         type="password"
@@ -70,12 +71,18 @@ export default function Login() {
                 <button type="submit">Ingresar</button>
                 {error && <p role="alert">{error}</p>}
             </form>
-            <footer className="login-footer">
+           
+           
+           
+           
+           
+           
+           
+            <footer>
                 <small>
                     ¿Olvidaste tu contraseña? <a href="#">Recupérala aquí</a>
                 </small>
             </footer>
         </main>
-    )
+    );
 }
-

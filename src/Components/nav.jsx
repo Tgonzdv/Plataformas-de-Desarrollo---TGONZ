@@ -1,4 +1,5 @@
 ﻿import React, { useState } from "react";
+import "../css/nav.css";
 
 const Nav = ({ onLogout }) => {
     const [loggingOut, setLoggingOut] = useState(false);
@@ -8,69 +9,27 @@ const Nav = ({ onLogout }) => {
         if (onLogout) onLogout();
         setTimeout(() => {
             window.location.href = "/";
-        }, 1500); // 1.5 segundos para mostrar el mensaje
+        }, 1500);
     };
 
     return (
-        <nav style={{
-            width: '100%',
-            background: 'linear-gradient(90deg, #232526 0%, #414345 100%)',
-            padding: '0.75rem 2rem',
-            boxSizing: 'border-box',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-        }}>
-            <div style={{
-                maxWidth: '1200px',
-                margin: '0 auto',
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                gap: '1.5rem'
-            }}>
+        <nav className="navbar">
+            <div className="navbar-content">
                 <a
                     href="/"
-                    style={{
-                        color: '#fff',
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                        fontSize: '1rem',
-                        transition: 'color 0.2s',
-                    }}
-                    onMouseOver={e => e.target.style.color = '#ffd700'}
-                    onMouseOut={e => e.target.style.color = '#fff'}
+                    className="navbar-link"
                 >
                     Perfil
                 </a>
                 <button
                     onClick={handleLogout}
-                    style={{
-                        background: 'linear-gradient(90deg, #ff512f 0%, #dd2476 100%)',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '20px',
-                        padding: '0.5rem 1.5rem',
-                        fontWeight: 600,
-                        fontSize: '1rem',
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(221,36,118,0.15)',
-                        transition: 'background 0.2s, transform 0.1s'
-                    }}
-                    onMouseOver={e => e.target.style.background = 'linear-gradient(90deg, #dd2476 0%, #ff512f 100%)'}
-                    onMouseOut={e => e.target.style.background = 'linear-gradient(90deg, #ff512f 0%, #dd2476 100%)'}
+                    className="navbar-logout-btn"
                     disabled={loggingOut}
                 >
                     Logout
                 </button>
                 {loggingOut && (
-                    <span style={{
-                        marginLeft: '1rem',
-                        color: '#fff',
-                        fontWeight: 600,
-                        fontSize: '1rem',
-                        background: '#232526cc',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '10px'
-                    }}>
+                    <span className="navbar-logout-message">
                         Cerrando sesión...
                     </span>
                 )}
