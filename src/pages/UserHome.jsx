@@ -1,14 +1,26 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import favoritosData from "../Json/favoritos.json";
 import PizzasData from "../Json/pizzas.json";
 import carritoData from "../Json/carrito.json";
-import Pizzas from './pizzas';
-import Favoritos from './favoritos';
-import Cart from './cart';
-import Nav from './nav';
+import Pizzas from '../Components/pizzas';
+import Favoritos from '../Components/favoritos';
+import Cart from '../Components/cart';
+import Nav from '../Components/nav';
+import { authUtils } from "../utils/auth";
 import "../css/userhome.css";
 
 export default function UserHome() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Verificar si el usuario está autenticado
+    if (!authUtils.isAuthenticated()) {
+      navigate("/");
+      return;
+    }
+  }, [navigate]);
+
   // Filtrar por userid 2 que es cliente Jorge
   const user = favoritosData.find(u => u.user_id === 2);
 
@@ -46,6 +58,13 @@ export default function UserHome() {
   const handleRemoveCarrito = (id) => {
     setCarrito(carrito.filter(item => item.id !== id));
   };
+
+  const handleLogout = () => {
+    authUtils.logout();
+    navigate("/");
+  };
+
+  const currentUser = authUtils.getCurrentUser();
   const handleAgregarCarrito = (pizza) => {
     // Busca si ya está en el carrito
     const existe = carrito.find(item => item.id === pizza.id);
@@ -66,7 +85,7 @@ export default function UserHome() {
 
   return (
     <>
-      <Nav onLogout={() => console.log("Cerrar sesión")} />
+      <Nav onLogout={handleLogout} />
 
         <div className="userhome-container">
           <h1 className="userhome-header">Tienda de Pizzas</h1>

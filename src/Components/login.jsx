@@ -1,6 +1,7 @@
-﻿import React, { useState } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import users from "../Json/users.json";
+import { authUtils } from "../utils/auth";
 import "../css/login.css";
 
 export default function Login() {
@@ -9,6 +10,18 @@ export default function Login() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    // Verificar si ya hay una sesión activa al cargar el componente
+    useEffect(() => {
+        const currentUser = authUtils.getCurrentUser();
+        if (currentUser) {
+            if (currentUser.role === "admin") {
+                navigate("/admin");
+            } else {
+                navigate("/user");
+            }
+        }
+    }, [navigate]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const user = users.find(
@@ -16,10 +29,17 @@ export default function Login() {
         );
         if (user) {
             setError("");
-            if (user.role === "admin") {
-                navigate("/admin");
+            // Guardar la sesión del usuario en localStorage usando la utilidad
+            const success = authUtils.saveUser(user);
+            
+            if (success) {
+                if (user.role === "admin") {
+                    navigate("/admin");
+                } else {
+                    navigate("/user");
+                }
             } else {
-                navigate("/user");
+                setError("Error al guardar la sesión. Inténtalo de nuevo.");
             }
         } else {
             setError("Usuario o contraseña incorrectos");
