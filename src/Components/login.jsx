@@ -55,7 +55,8 @@ export default function Login() {
                     width={290}
                     height={245}
                 />
-                <h1>Iniciar sesión</h1>
+                <h1>PizzaYa</h1>
+                      <h2>Iniciar sesión</h2>
             </header>
         
         
@@ -68,7 +69,7 @@ export default function Login() {
                         id="username"
                         name="username"
                         required
-                        placeholder="Tu usuario"
+                        placeholder="Ingresa tu usuario"
                         autoFocus
                         value={username}
                         onChange={e => setUsername(e.target.value)}
@@ -82,7 +83,7 @@ export default function Login() {
                         id="password"
                         name="password"
                         required
-                        placeholder="Tu contraseña"
+                        placeholder="Ingresa tu contraseña"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         autoComplete="current-password"
@@ -100,7 +101,7 @@ export default function Login() {
            
             <footer>
                 <small>
-                    ¿Olvidaste tu contraseña? <a href="#">Recupérala aquí</a>
+                    ¿Olvidaste tu contraseña? <a href="#" onClick={(e) => e.preventDefault()}>Recupérala aquí</a>
                 </small>
             </footer>
         </main>

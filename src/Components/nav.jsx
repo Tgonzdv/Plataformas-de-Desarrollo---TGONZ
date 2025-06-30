@@ -18,28 +18,44 @@ const Nav = ({ onLogout }) => {
     return (
         <nav className="navbar">
             <div className="navbar-content">
-                <div className="navbar-user-info">
-                    <span>Bienvenido, {currentUser?.username || 'Usuario'}</span>
+                <div className="navbar-brand">
+                    <h2>🍕 PizzYa</h2>
                 </div>
-                <div className="navbar-actions">
-                    <a
-                        href="/"
-                        className="navbar-link"
-                    >
-                        Perfil
-                    </a>
-                    <button
-                        onClick={handleLogout}
-                        className="navbar-logout-btn"
-                        disabled={loggingOut}
-                    >
-                        Logout
-                    </button>
-                    {loggingOut && (
-                        <span className="navbar-logout-message">
-                            Cerrando sesión...
+                <div className="navbar-user-section">
+                    <div className="navbar-user-info">
+                        <div className="user-avatar">
+                            {currentUser?.username?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                        <span className="user-greeting">
+                            Hola, <strong>{currentUser?.username || 'Usuario'}</strong>
                         </span>
-                    )}
+                    </div>
+                    <div className="navbar-actions">
+                        <a
+                            href="/"
+                            className="navbar-link"
+                        >
+                            <span>👤</span>
+                            Perfil
+                        </a>
+                        <button
+                            onClick={handleLogout}
+                            className={`navbar-logout-btn ${loggingOut ? 'logging-out' : ''}`}
+                            disabled={loggingOut}
+                        >
+                            {loggingOut ? (
+                                <>
+                                    <span className="spinner"></span>
+                                    Cerrando...
+                                </>
+                            ) : (
+                                <>
+                                    <span>🚪</span>
+                                    Salir
+                                </>
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
