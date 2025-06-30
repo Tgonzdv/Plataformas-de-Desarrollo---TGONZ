@@ -49,13 +49,8 @@ export default function Login() {
     return (
         <main className="login">
             <header>
-                <img
-                    src={require("../logi.png")}
-                    alt="Login Icon"
-                    width={290}
-                    height={245}
-                />
-                <h1>PizzaYa</h1>
+         
+                <h1>🍕PizzaYa</h1>
                       <h2>Iniciar sesión</h2>
             </header>
         

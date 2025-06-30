@@ -7,7 +7,12 @@ usuarios van a agregar/cancelar pizzas a un pediudo  pedidos.json x
 admin va a poder crear/eliminar usuarios   users.json x
 admin va a poder agregar/quitar pizza pizzas.json x
 admin va a poder ver usuarios  users.json x
+
+
+
 admin va a poder ver pedidos   pedidos.json x 
+
+
 admin va a poder aceptar/cancelar pedidos  pedidos.json x
 
 

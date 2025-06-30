@@ -19,7 +19,7 @@ const Nav = ({ onLogout }) => {
         <nav className="navbar">
             <div className="navbar-content">
                 <div className="navbar-brand">
-                    <h2>🍕 PizzYa</h2>
+                    <h2>🍕 PizzaYa</h2>
                 </div>
                 <div className="navbar-user-section">
                     <div className="navbar-user-info">
