@@ -17,7 +17,7 @@ export default function AdminNav({ activeSection, setActiveSection, onLogout }) 
 
   return (
     <>
-      {/* Top Navigation Bar - Similar to client nav */}
+      {}
       <nav className="navbar">
         <div className="navbar-content">
           <div className="navbar-brand">
@@ -62,7 +62,7 @@ export default function AdminNav({ activeSection, setActiveSection, onLogout }) 
         </div>
       </nav>
 
-      {/* Admin Panel Navigation */}
+      {}
       <nav className="admin-nav">
         <button 
           className={`admin-nav-btn ${activeSection === "dashboard" ? "active" : ""}`}

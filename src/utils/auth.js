@@ -1,4 +1,4 @@
-// Utilidades para manejo de autenticación con localStorage
+
 
 export const authUtils = {
     // Obtener usuario actual del localStorage
