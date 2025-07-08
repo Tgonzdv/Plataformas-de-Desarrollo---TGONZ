@@ -1,8 +1,19 @@
 ﻿import React from "react";
 import "../css/cart.css";
 
-const Cart = ({ items, onRemove, loading = false }) => {
+const Cart = ({ items, onRemove, onOrder, loading = false }) => {
+    console.log("=== COMPONENTE CART ===");
+    console.log("Items recibidos en Cart:", items);
+    console.log("Loading:", loading);
+    console.log("========================");
+    
     const total = items.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+
+    const handleOrderClick = () => {
+        if (onOrder && typeof onOrder === 'function') {
+            onOrder();
+        }
+    };
 
     return (
         <div className="cart-container">
@@ -56,10 +67,11 @@ const Cart = ({ items, onRemove, loading = false }) => {
                             transition: 'background-color 0.2s'
                         }}
                         disabled={loading}
+                        onClick={handleOrderClick}
                         onMouseOver={(e) => e.target.style.backgroundColor = '#218838'}
                         onMouseOut={(e) => e.target.style.backgroundColor = '#28a745'}
                     >
-                        Realizar Pedido
+                        {loading ? 'Procesando...' : 'Hacer Pedido'}
                     </button>
                 </div>
             )}

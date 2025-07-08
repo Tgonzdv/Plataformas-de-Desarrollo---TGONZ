@@ -5,7 +5,12 @@ const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
+    console.log('=== MIDDLEWARE AUTH ===');
+    console.log('Auth header:', authHeader);
+    console.log('Token extraído:', token ? token.substring(0, 20) + '...' : 'No token');
+
     if (!token) {
+        console.log('No se encontró token');
         return res.status(401).json({ 
             error: 'Token de acceso requerido',
             message: 'Debes estar autenticado para acceder a este recurso'
@@ -14,13 +19,16 @@ const authenticateToken = (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
+            console.log('Error verificando token:', err);
             return res.status(403).json({ 
                 error: 'Token inválido',
                 message: 'El token proporcionado no es válido o ha expirado'
             });
         }
         
+        console.log('Token válido. Usuario decodificado:', user);
         req.user = user; // Agregar info del usuario al request
+        console.log('======================');
         next();
     });
 };

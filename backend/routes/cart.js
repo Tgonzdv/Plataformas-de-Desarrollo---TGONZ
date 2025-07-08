@@ -9,9 +9,14 @@ const pizzasModel = new DataModel('pizzas.json');
 router.get('/', (req, res) => {
     try {
         const userId = req.user.id;
+        console.log('=== GET CARRITO ===');
+        console.log('Obteniendo carrito para usuario ID:', userId);
+        console.log('Tipo de userId:', typeof userId);
         let userCart = cartsModel.findByProperty('userId', userId);
+        console.log('Carrito encontrado:', JSON.stringify(userCart, null, 2));
 
         if (!userCart) {
+            console.log('No se encontró carrito, creando uno nuevo');
             // Crear carrito vacío si no existe
             userCart = cartsModel.create({
                 userId,
@@ -19,7 +24,12 @@ router.get('/', (req, res) => {
                 total: 0,
                 updatedAt: new Date().toISOString()
             });
+            console.log('Carrito creado:', JSON.stringify(userCart, null, 2));
         }
+
+        console.log('Enviando respuesta con carrito:', JSON.stringify(userCart, null, 2));
+        console.log('Structure check - userCart.items:', userCart.items);
+        console.log('===================');
 
         res.json({
             message: 'Carrito obtenido exitosamente',
@@ -40,6 +50,11 @@ router.post('/add', (req, res) => {
         const userId = req.user.id;
         const { pizzaId, cantidad = 1 } = req.body;
 
+        console.log('=== AGREGAR AL CARRITO ===');
+        console.log('Usuario ID:', userId);
+        console.log('Pizza ID:', pizzaId);
+        console.log('Cantidad:', cantidad);
+
         if (!pizzaId) {
             return res.status(400).json({
                 error: 'Datos faltantes',
@@ -49,6 +64,7 @@ router.post('/add', (req, res) => {
 
         // Verificar que la pizza existe
         const pizza = pizzasModel.findById(pizzaId);
+        console.log('Pizza encontrada:', pizza);
         if (!pizza) {
             return res.status(404).json({
                 error: 'Pizza no encontrada',
@@ -57,7 +73,10 @@ router.post('/add', (req, res) => {
         }
 
         let userCart = cartsModel.findByProperty('userId', userId);
+        console.log('Carrito antes de agregar:', JSON.stringify(userCart, null, 2));
+        
         if (!userCart) {
+            console.log('Creando nuevo carrito para usuario:', userId);
             userCart = cartsModel.create({
                 userId,
                 items: [],
@@ -68,28 +87,37 @@ router.post('/add', (req, res) => {
 
         // Buscar si el item ya existe en el carrito
         const existingItemIndex = userCart.items.findIndex(item => item.pizzaId === parseInt(pizzaId));
+        console.log('Índice de item existente:', existingItemIndex);
 
         if (existingItemIndex >= 0) {
             // Actualizar cantidad si ya existe
+            console.log('Actualizando cantidad del item existente');
             userCart.items[existingItemIndex].cantidad += parseInt(cantidad);
         } else {
             // Agregar nuevo item
+            console.log('Agregando nuevo item al carrito');
             const maxId = userCart.items.length > 0 ? Math.max(...userCart.items.map(item => item.id)) : 0;
-            userCart.items.push({
+            const newItem = {
                 id: maxId + 1,
                 pizzaId: parseInt(pizzaId),
                 nombre: pizza.nombre,
                 cantidad: parseInt(cantidad),
                 precio: pizza.precio
-            });
+            };
+            console.log('Nuevo item:', newItem);
+            userCart.items.push(newItem);
         }
 
         // Recalcular total
         userCart.total = userCart.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
         userCart.updatedAt = new Date().toISOString();
 
+        console.log('Carrito después de agregar:', JSON.stringify(userCart, null, 2));
+
         // Actualizar carrito
         const updatedCart = cartsModel.update(userCart.id, userCart);
+        console.log('Carrito actualizado en DB:', JSON.stringify(updatedCart, null, 2));
+        console.log('========================');
 
         res.json({
             message: 'Item agregado al carrito exitosamente',

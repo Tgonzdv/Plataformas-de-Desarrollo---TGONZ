@@ -41,6 +41,36 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+// Ruta de diagnóstico para verificar autenticación
+app.get('/api/debug', authenticateToken, (req, res) => {
+    res.json({
+        message: 'Autenticación exitosa',
+        user: req.user,
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Ruta de diagnóstico para verificar contenido del archivo carts.json
+app.get('/api/debug/carts', authenticateToken, (req, res) => {
+    try {
+        const DataModel = require('./models/DataModel');
+        const cartsModel = new DataModel('carts.json');
+        const allCarts = cartsModel.getAll();
+        
+        res.json({
+            message: 'Contenido completo del archivo carts.json',
+            user: req.user,
+            carts: allCarts,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: 'Error al leer archivo carts.json',
+            message: error.message
+        });
+    }
+});
+
 // Manejo de errores global
 app.use((err, req, res, next) => {
     console.error(err.stack);

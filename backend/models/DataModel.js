@@ -45,7 +45,11 @@ class DataModel {
 
     findByProperty(property, value) {
         const data = this.read();
-        return data.find(item => item[property] === value);
+        console.log(`Buscando en ${this.filename} - Propiedad: ${property}, Valor: ${value}`);
+        console.log(`Datos disponibles:`, data);
+        const result = data.find(item => item[property] === value);
+        console.log(`Resultado encontrado:`, result);
+        return result;
     }
 
     create(newItem) {
