@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "$2a$10$SMF2CCjYY4dh.XgNqVgtA.YNnBzCk0CwRLBP4JX5w8y82qUTrAVNm",
+    "role": "admin",
+    "email": "admin@pizzaya.com",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "username": "jorge",
+    "password": "$2a$10$drnMbFzms5a2Z4wurAAZFe5K6deRCF5boN5mNAUYud.9l8k9OZRdS",
+    "role": "user",
+    "email": "jorge@email.com",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  }
+]

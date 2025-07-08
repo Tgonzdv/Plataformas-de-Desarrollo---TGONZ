@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "userId": 2,
+    "items": [
+      {
+        "id": 1,
+        "pizzaId": 1,
+        "nombre": "Margarita",
+        "cantidad": 1,
+        "precio": 150000
+      },
+      {
+        "id": 2,
+        "pizzaId": 2,
+        "nombre": "Pepperoni",
+        "cantidad": 2,
+        "precio": 170000
+      }
+    ],
+    "total": 490000,
+    "updatedAt": "2024-07-08T00:00:00.000Z"
+  }
+]

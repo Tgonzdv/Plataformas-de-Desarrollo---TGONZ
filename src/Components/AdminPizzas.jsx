@@ -5,7 +5,8 @@ export default function AdminPizzas({
   newPizza, 
   setNewPizza, 
   handleCreatePizza, 
-  handleDeletePizza 
+  handleDeletePizza,
+  loadingPizzas = false
 }) {
   return (
     <div className="admin-section">
@@ -48,24 +49,38 @@ export default function AdminPizzas({
           </tr>
         </thead>
         <tbody>
-          {pizzas.map(pizza => (
-            <tr key={pizza.id}>
-              <td>{pizza.id}</td>
-              <td>{pizza.nombre}</td>
-              <td>${pizza.precio.toLocaleString()}</td>
-              <td>{pizza.descripcion}</td>
-              <td>
-                <div className="admin-actions">
-                  <button 
-                    onClick={() => handleDeletePizza(pizza.id)}
-                    className="admin-btn admin-btn-danger"
-                  >
-                    Eliminar
-                  </button>
-                </div>
+          {loadingPizzas ? (
+            <tr>
+              <td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>
+                Cargando pizzas...
               </td>
             </tr>
-          ))}
+          ) : pizzas.length === 0 ? (
+            <tr>
+              <td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>
+                No hay pizzas disponibles
+              </td>
+            </tr>
+          ) : (
+            pizzas.map(pizza => (
+              <tr key={pizza.id}>
+                <td>{pizza.id}</td>
+                <td>{pizza.nombre}</td>
+                <td>${pizza.precio.toLocaleString()}</td>
+                <td>{pizza.descripcion}</td>
+                <td>
+                  <div className="admin-actions">
+                    <button 
+                      onClick={() => handleDeletePizza(pizza.id)}
+                      className="admin-btn admin-btn-danger"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

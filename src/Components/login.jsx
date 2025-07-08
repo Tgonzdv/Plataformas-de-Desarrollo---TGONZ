@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import users from "../Json/users.json";
+import { authAPI } from "../services/authAPI";
 import { authUtils } from "../utils/auth";
 import "../css/login.css";
 
@@ -8,6 +8,7 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     // Verificar si ya hay una sesión activa al cargar el componente
@@ -22,39 +23,32 @@ export default function Login() {
         }
     }, [navigate]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = users.find(
-            u => u.username === username && u.password === password
-        );
-        if (user) {
-            setError("");
-            // Guardar la sesión del usuario en localStorage usando la utilidad
-            const success = authUtils.saveUser(user);
+        setLoading(true);
+        setError("");
+
+        try {
+            const response = await authAPI.login(username, password);
             
-            if (success) {
-                if (user.role === "admin") {
-                    navigate("/admin");
-                } else {
-                    navigate("/user");
-                }
+            if (response.user.role === "admin") {
+                navigate("/admin");
             } else {
-                setError("Error al guardar la sesión. Inténtalo de nuevo.");
+                navigate("/user");
             }
-        } else {
-            setError("Usuario o contraseña incorrectos");
+        } catch (error) {
+            setError(error.message || "Error al iniciar sesión");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <main className="login">
             <header>
-         
                 <h1>🍕PizzaYa</h1>
-                      <h2>Iniciar sesión</h2>
+                <h2>Iniciar sesión</h2>
             </header>
-        
-        
         
             <form onSubmit={handleSubmit} aria-label="Formulario de inicio de sesión" autoComplete="on">
                 <div>
@@ -69,6 +63,7 @@ export default function Login() {
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                         autoComplete="username"
+                        disabled={loading}
                     />
                 </div>
                 <div>
@@ -82,17 +77,14 @@ export default function Login() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         autoComplete="current-password"
+                        disabled={loading}
                     />
                 </div>
-                <button type="submit">Ingresar</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? "Iniciando sesión..." : "Ingresar"}
+                </button>
                 {error && <p role="alert">{error}</p>}
             </form>
-           
-           
-           
-           
-           
-           
            
             <footer>
                 <small>

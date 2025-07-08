@@ -1,9 +1,32 @@
 ﻿import React from "react";
-import PizzasData from "../Json/pizzas.json";
 import "../css/pizza.css";
 
-export default function Pizzas({ favoritos = [], onAgregarFavorito, onAgregarCarrito }) {
-    const pizzas = PizzasData;
+export default function Pizzas({ 
+  pizzas = [], 
+  favoritos = [], 
+  onAgregarFavorito, 
+  onAgregarCarrito,
+  loadingPizzas = false 
+}) {
+    if (loadingPizzas) {
+        return (
+            <div className="pizzas-container">
+                <div style={{ textAlign: 'center', padding: '50px', width: '100%' }}>
+                    <h3>Cargando pizzas...</h3>
+                </div>
+            </div>
+        );
+    }
+
+    if (pizzas.length === 0) {
+        return (
+            <div className="pizzas-container">
+                <div style={{ textAlign: 'center', padding: '50px', width: '100%' }}>
+                    <h3>No hay pizzas disponibles</h3>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="pizzas-container">

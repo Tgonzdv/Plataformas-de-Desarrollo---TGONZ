@@ -4,12 +4,14 @@ import { authUtils } from "../utils/auth";
 import usersData from "../Json/users.json";
 import pizzasData from "../Json/pizzas.json";
 import pedidosData from "../Json/pedidos.json";
+import { pizzaAPI } from "../services/pizzaAPI";
 import AdminDashboard from "../Components/AdminDashboard";
 import AdminUsers from "../Components/AdminUsers";
 import AdminPizzas from "../Components/AdminPizzas";
 import AdminOrders from "../Components/AdminOrders";
 import AdminNav from "../Components/AdminNav";
 import "../css/adminhome.css";
+
 
 export default function AdminHome() {
   const navigate = useNavigate();
@@ -20,8 +22,9 @@ export default function AdminHome() {
   const [newUser, setNewUser] = useState({ username: "", password: "", role: "user" });
   
   // Estados para pizzas
-  const [pizzas, setPizzas] = useState(pizzasData);
+  const [pizzas, setPizzas] = useState([]);
   const [newPizza, setNewPizza] = useState({ nombre: "", precio: "", descripcion: "" });
+  const [loadingPizzas, setLoadingPizzas] = useState(false);
   
   // Estados para pedidos
   const [pedidos, setPedidos] = useState(pedidosData.map(pedido => ({
@@ -41,6 +44,25 @@ export default function AdminHome() {
       return;
     }
   }, [navigate]);
+
+  // Cargar pizzas desde la API
+  useEffect(() => {
+    const loadPizzas = async () => {
+      try {
+        setLoadingPizzas(true);
+        const pizzasFromAPI = await pizzaAPI.getAllPizzas();
+        setPizzas(pizzasFromAPI);
+      } catch (error) {
+        console.error("Error al cargar pizzas:", error);
+        // Fallback a datos locales si la API falla
+        setPizzas(pizzasData);
+      } finally {
+        setLoadingPizzas(false);
+      }
+    };
+
+    loadPizzas();
+  }, []);
 
   const handleLogout = () => {
     authUtils.logout();
@@ -71,25 +93,46 @@ export default function AdminHome() {
   };
 
   // Funciones para pizzas
-  const handleCreatePizza = (e) => {
+  const handleCreatePizza = async (e) => {
     e.preventDefault();
     if (newPizza.nombre && newPizza.precio && newPizza.descripcion) {
-      const id = Math.max(...pizzas.map(p => p.id), 0) + 1;
-      const pizzaToAdd = { 
-        id, 
-        nombre: newPizza.nombre,
-        precio: parseInt(newPizza.precio),
-        descripcion: newPizza.descripcion
-      };
-      setPizzas([...pizzas, pizzaToAdd]);
-      setNewPizza({ nombre: "", precio: "", descripcion: "" });
-      console.log("Pizza creada:", pizzaToAdd);
+      try {
+        const pizzaToAdd = { 
+          nombre: newPizza.nombre,
+          precio: parseInt(newPizza.precio),
+          descripcion: newPizza.descripcion
+        };
+        
+        // Llamada a la API real
+        const createdPizza = await pizzaAPI.createPizza(pizzaToAdd);
+        
+        // Actualizar el estado local con la pizza creada
+        setPizzas([...pizzas, createdPizza]);
+        setNewPizza({ nombre: "", precio: "", descripcion: "" });
+        
+        console.log("Pizza creada exitosamente:", createdPizza);
+        alert("Pizza agregada exitosamente");
+      } catch (error) {
+        console.error("Error al crear pizza:", error);
+        alert("Error al agregar la pizza: " + error.message);
+      }
     }
   };
 
-  const handleDeletePizza = (pizzaId) => {
-    setPizzas(pizzas.filter(pizza => pizza.id !== pizzaId));
-    console.log("Pizza eliminada:", pizzaId);
+  const handleDeletePizza = async (pizzaId) => {
+    try {
+      // Llamada a la API real
+      await pizzaAPI.deletePizza(pizzaId);
+      
+      // Actualizar el estado local
+      setPizzas(pizzas.filter(pizza => pizza.id !== pizzaId));
+      
+      console.log("Pizza eliminada exitosamente:", pizzaId);
+      alert("Pizza eliminada exitosamente");
+    } catch (error) {
+      console.error("Error al eliminar pizza:", error);
+      alert("Error al eliminar la pizza: " + error.message);
+    }
   };
 
   // Funciones para pedidos
@@ -138,6 +181,7 @@ export default function AdminHome() {
             setNewPizza={setNewPizza}
             handleCreatePizza={handleCreatePizza}
             handleDeletePizza={handleDeletePizza}
+            loadingPizzas={loadingPizzas}
           />
         );
       case "orders":

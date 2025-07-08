@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "userId": 2,
+    "items": [
+      {
+        "pizzaId": 1,
+        "nombre": "Margarita",
+        "cantidad": 2,
+        "precio": 150000
+      }
+    ],
+    "total": 300000,
+    "status": "pendiente",
+    "fecha": "2025-06-13T00:00:00.000Z",
+    "createdAt": "2025-06-13T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "userId": 2,
+    "items": [
+      {
+        "pizzaId": 2,
+        "nombre": "Pepperoni",
+        "cantidad": 1,
+        "precio": 170000
+      },
+      {
+        "pizzaId": 5,
+        "nombre": "Vegetariana",
+        "cantidad": 1,
+        "precio": 160000
+      }
+    ],
+    "total": 330000,
+    "status": "aceptado",
+    "fecha": "2025-06-12T00:00:00.000Z",
+    "createdAt": "2025-06-12T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "userId": 2,
+    "items": [
+      {
+        "pizzaId": 3,
+        "nombre": "Cuatro Quesos",
+        "cantidad": 1,
+        "precio": 180000
+      },
+      {
+        "pizzaId": 4,
+        "nombre": "Hawaiana",
+        "cantidad": 2,
+        "precio": 150000
+      }
+    ],
+    "total": 480000,
+    "status": "cancelado",
+    "fecha": "2025-06-11T00:00:00.000Z",
+    "createdAt": "2025-06-11T00:00:00.000Z"
+  }
+]

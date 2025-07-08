@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import favoritosData from "../Json/favoritos.json";
 import PizzasData from "../Json/pizzas.json";
 import carritoData from "../Json/carrito.json";
+import { pizzaAPI } from "../services/pizzaAPI";
 import Pizzas from '../Components/pizzas';
 import Favoritos from '../Components/favoritos';
 import Cart from '../Components/cart';
@@ -21,6 +22,25 @@ export default function UserHome() {
     }
   }, [navigate]);
 
+  // Cargar pizzas desde la API
+  useEffect(() => {
+    const loadPizzas = async () => {
+      try {
+        setLoadingPizzas(true);
+        const pizzasFromAPI = await pizzaAPI.getAllPizzas();
+        setPizzas(pizzasFromAPI);
+      } catch (error) {
+        console.error("Error al cargar pizzas:", error);
+        // Mantener datos locales como fallback
+        setPizzas(PizzasData);
+      } finally {
+        setLoadingPizzas(false);
+      }
+    };
+
+    loadPizzas();
+  }, []);
+
   // Filtrar por userid 2 que es cliente Jorge
   const user = favoritosData.find(u => u.user_id === 2);
 
@@ -31,8 +51,8 @@ export default function UserHome() {
     ? carritoData.find(u => u.user_id === 2)
     : carritoData;
   const [carrito, setCarrito] = useState(userCarrito?.items || []);
-
-  const pizzas = PizzasData;
+  const [pizzas, setPizzas] = useState(PizzasData);
+  const [loadingPizzas, setLoadingPizzas] = useState(false);
 
   // Simulación de guardar/eliminar favoritos en JSON
   const guardarFavoritosEnJson = (nuevosFavoritos) => {
@@ -98,9 +118,11 @@ export default function UserHome() {
          
          
             <Pizzas
+              pizzas={pizzas}
               favoritos={favoritos}
               onAgregarFavorito={handleAgregarFavorito}
               onAgregarCarrito={handleAgregarCarrito}
+              loadingPizzas={loadingPizzas}
             />
 
 
