@@ -52,5 +52,23 @@
     "categoria": "general",
     "disponible": true,
     "createdAt": "2025-07-08T19:14:24.495Z"
+  },
+  {
+    "id": 7,
+    "nombre": "sarasa",
+    "precio": 33,
+    "descripcion": "sarasa",
+    "categoria": "general",
+    "disponible": true,
+    "createdAt": "2025-07-08T19:41:24.272Z"
+  },
+  {
+    "id": 8,
+    "nombre": "333",
+    "precio": 33,
+    "descripcion": "333",
+    "categoria": "general",
+    "disponible": true,
+    "createdAt": "2025-07-08T19:47:58.732Z"
   }
 ]

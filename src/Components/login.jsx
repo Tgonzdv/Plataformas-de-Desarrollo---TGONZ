@@ -90,6 +90,16 @@ export default function Login() {
                 <small>
                     ¿Olvidaste tu contraseña? <a href="#" onClick={(e) => e.preventDefault()}>Recupérala aquí</a>
                 </small>
+                <small>
+                    ¿No tienes una cuenta? <button 
+                        type="button" 
+                        onClick={() => navigate("/register")} 
+                        className="link-button"
+                        disabled={loading}
+                    >
+                        Regístrate aquí
+                    </button>
+                </small>
             </footer>
         </main>
     );

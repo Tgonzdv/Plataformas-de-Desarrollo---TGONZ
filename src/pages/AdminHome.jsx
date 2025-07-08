@@ -5,6 +5,7 @@ import usersData from "../Json/users.json";
 import pizzasData from "../Json/pizzas.json";
 import pedidosData from "../Json/pedidos.json";
 import { pizzaAPI } from "../services/pizzaAPI";
+import { userAPI } from "../services/userAPI";
 import AdminDashboard from "../Components/AdminDashboard";
 import AdminUsers from "../Components/AdminUsers";
 import AdminPizzas from "../Components/AdminPizzas";
@@ -18,8 +19,9 @@ export default function AdminHome() {
   const [activeSection, setActiveSection] = useState("dashboard");
   
   // Estados para usuarios
-  const [users, setUsers] = useState(usersData);
-  const [newUser, setNewUser] = useState({ username: "", password: "", role: "user" });
+  const [users, setUsers] = useState([]);
+  const [newUser, setNewUser] = useState({ username: "", password: "", role: "user", email: "" });
+  const [loadingUsers, setLoadingUsers] = useState(false);
   
   // Estados para pizzas
   const [pizzas, setPizzas] = useState([]);
@@ -64,6 +66,25 @@ export default function AdminHome() {
     loadPizzas();
   }, []);
 
+  // Cargar usuarios desde la API
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        setLoadingUsers(true);
+        const usersFromAPI = await userAPI.getAllUsers();
+        setUsers(usersFromAPI);
+      } catch (error) {
+        console.error("Error al cargar usuarios:", error);
+        // Fallback a datos locales si la API falla
+        setUsers(usersData);
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
+
+    loadUsers();
+  }, []);
+
   const handleLogout = () => {
     authUtils.logout();
     navigate("/");
@@ -72,24 +93,52 @@ export default function AdminHome() {
   const currentUser = authUtils.getCurrentUser();
 
   // Funciones para usuarios
-  const handleCreateUser = (e) => {
+  const handleCreateUser = async (e) => {
     e.preventDefault();
     if (newUser.username && newUser.password) {
-      const id = Math.max(...users.map(u => u.id), 0) + 1;
-      const userToAdd = { id, ...newUser };
-      setUsers([...users, userToAdd]);
-      setNewUser({ username: "", password: "", role: "user" });
-      console.log("Usuario creado:", userToAdd);
+      try {
+        const userToAdd = {
+          username: newUser.username,
+          password: newUser.password,
+          email: newUser.email || `${newUser.username}@pizzaya.com`,
+          role: newUser.role
+        };
+        
+        // Llamada a la API real
+        const createdUser = await userAPI.createUser(userToAdd);
+        
+        // Actualizar el estado local con el usuario creado
+        setUsers([...users, createdUser]);
+        setNewUser({ username: "", password: "", role: "user", email: "" });
+        
+        console.log("Usuario creado exitosamente:", createdUser);
+        alert("Usuario creado exitosamente");
+      } catch (error) {
+        console.error("Error al crear usuario:", error);
+        alert("Error al crear el usuario: " + error.message);
+      }
     }
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = async (userId) => {
     if (userId === 1) { // No permitir eliminar admin principal
       alert("No se puede eliminar el usuario administrador principal");
       return;
     }
-    setUsers(users.filter(user => user.id !== userId));
-    console.log("Usuario eliminado:", userId);
+    
+    try {
+      // Llamada a la API real
+      await userAPI.deleteUser(userId);
+      
+      // Actualizar el estado local
+      setUsers(users.filter(user => user.id !== userId));
+      
+      console.log("Usuario eliminado exitosamente:", userId);
+      alert("Usuario eliminado exitosamente");
+    } catch (error) {
+      console.error("Error al eliminar usuario:", error);
+      alert("Error al eliminar el usuario: " + error.message);
+    }
   };
 
   // Funciones para pizzas
@@ -171,6 +220,7 @@ export default function AdminHome() {
             setNewUser={setNewUser}
             handleCreateUser={handleCreateUser}
             handleDeleteUser={handleDeleteUser}
+            loadingUsers={loadingUsers}
           />
         );
       case "pizzas":

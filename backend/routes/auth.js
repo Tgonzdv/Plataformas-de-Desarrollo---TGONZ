@@ -27,10 +27,8 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        // Verificar contraseña (temporal: comparación directa para desarrollo)
-        // En producción, usar bcrypt.compare()
-        const isValidPassword = password === 'admin123' && username === 'admin' ||
-                               password === 'cliente123' && username === 'jorge';
+        // Verificar contraseña
+        const isValidPassword = await bcrypt.compare(password, user.password);
         
         if (!isValidPassword) {
             return res.status(401).json({

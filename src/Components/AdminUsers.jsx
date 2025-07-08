@@ -5,7 +5,8 @@ export default function AdminUsers({
   newUser, 
   setNewUser, 
   handleCreateUser, 
-  handleDeleteUser 
+  handleDeleteUser,
+  loadingUsers 
 }) {
   return (
     <div className="admin-section">
@@ -18,6 +19,12 @@ export default function AdminUsers({
           value={newUser.username}
           onChange={(e) => setNewUser({...newUser, username: e.target.value})}
           required
+        />
+        <input
+          type="email"
+          placeholder="Email (opcional)"
+          value={newUser.email}
+          onChange={(e) => setNewUser({...newUser, email: e.target.value})}
         />
         <input
           type="password"
@@ -43,30 +50,46 @@ export default function AdminUsers({
           <tr>
             <th>ID</th>
             <th>Usuario</th>
+            <th>Email</th>
             <th>Rol</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.username}</td>
-              <td>{user.role}</td>
-              <td>
-                <div className="admin-actions">
-                  {user.id !== 1 && (
-                    <button 
-                      onClick={() => handleDeleteUser(user.id)}
-                      className="admin-btn admin-btn-danger"
-                    >
-                      Eliminar
-                    </button>
-                  )}
-                </div>
+          {loadingUsers ? (
+            <tr>
+              <td colSpan="5" style={{textAlign: 'center', padding: '20px'}}>
+                Cargando usuarios...
               </td>
             </tr>
-          ))}
+          ) : users.length === 0 ? (
+            <tr>
+              <td colSpan="5" style={{textAlign: 'center', padding: '20px'}}>
+                No hay usuarios disponibles
+              </td>
+            </tr>
+          ) : (
+            users.map(user => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td>
+                  <div className="admin-actions">
+                    {user.id !== 1 && (
+                      <button 
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="admin-btn admin-btn-danger"
+                      >
+                        Eliminar
+                      </button>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
