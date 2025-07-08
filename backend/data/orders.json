@@ -104,5 +104,33 @@
     "status": "pendiente",
     "fecha": "2025-07-08T20:49:00.653Z",
     "createdAt": "2025-07-08T20:49:00.653Z"
+  },
+  {
+    "id": 6,
+    "userId": 6,
+    "items": [
+      {
+        "pizzaId": 2,
+        "nombre": "Pepperoni",
+        "cantidad": 1,
+        "precio": 170000
+      },
+      {
+        "pizzaId": 1,
+        "nombre": "Margarita",
+        "cantidad": 1,
+        "precio": 150000
+      },
+      {
+        "pizzaId": 6,
+        "nombre": "test",
+        "cantidad": 1,
+        "precio": 33
+      }
+    ],
+    "total": 320033,
+    "status": "pendiente",
+    "fecha": "2025-07-08T21:18:41.312Z",
+    "createdAt": "2025-07-08T21:18:41.312Z"
   }
 ]

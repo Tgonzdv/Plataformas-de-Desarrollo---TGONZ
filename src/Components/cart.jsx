@@ -2,10 +2,7 @@
 import "../css/cart.css";
 
 const Cart = ({ items, onRemove, onOrder, loading = false }) => {
-    console.log("=== COMPONENTE CART ===");
-    console.log("Items recibidos en Cart:", items);
-    console.log("Loading:", loading);
-    console.log("========================");
+  
     
     const total = items.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
 

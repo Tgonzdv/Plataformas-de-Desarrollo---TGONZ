@@ -80,7 +80,7 @@ function App() {
           </Routes>
         </div>
         <div className="footer" style={{ width: "100%", textAlign: "center", marginTop: "auto" }}>
-          <p>© 2025 Tomas Gonzalez Zingales - Parcial 2 Plataformas de Desarrollo</p>
+          <p>© 2025 Tomas Gonzalez Zingales - Final Plataformas de Desarrollo</p>
         </div>
       </div>
     </Router>

@@ -35,9 +35,7 @@ async function initializeData() {
         const usersPath = path.join(__dirname, 'data', 'users.json');
         fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
 
-        console.log('✅ Datos inicializados correctamente');
-        console.log('👤 Usuario admin: admin/admin123');
-        console.log('👤 Usuario cliente: jorge/cliente123');
+   
         
     } catch (error) {
         console.error('❌ Error inicializando datos:', error);

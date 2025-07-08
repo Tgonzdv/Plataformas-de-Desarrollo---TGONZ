@@ -79,12 +79,12 @@ export default function Register() {
                 username: formData.username.trim(),
                 email: formData.email.trim(),
                 password: formData.password,
-                role: "user" // Los usuarios registrados por defecto son "user"
+                role: "user"  
             };
 
             const response = await authAPI.register(userData);
             
-            // El registro fue exitoso, redirigir según el rol
+        
             if (response.user.role === "admin") {
                 navigate("/admin");
             } else {

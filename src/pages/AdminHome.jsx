@@ -55,7 +55,7 @@ export default function AdminHome() {
         setPizzas(pizzasFromAPI);
       } catch (error) {
         console.error("Error al cargar pizzas:", error);
-        // Fallback a datos locales si la API falla
+       
         setPizzas(pizzasData);
       } finally {
         setLoadingPizzas(false);
@@ -74,7 +74,7 @@ export default function AdminHome() {
         setUsers(usersFromAPI);
       } catch (error) {
         console.error("Error al cargar usuarios:", error);
-        // Fallback a datos locales si la API falla
+    
         setUsers(usersData);
       } finally {
         setLoadingUsers(false);
@@ -93,7 +93,7 @@ export default function AdminHome() {
         setPedidos(ordersFromAPI);
       } catch (error) {
         console.error("Error al cargar pedidos:", error);
-        // Fallback a datos locales si la API falla
+      
         setPedidos(pedidosData.map(pedido => ({
           ...pedido,
           status: pedido.status || "pendiente"
@@ -106,12 +106,12 @@ export default function AdminHome() {
     // Cargar pedidos inmediatamente
     loadOrdersLocal();
 
-    // Configurar actualización automática cada 30 segundos
+    //  actualización automática cada 30 segundos
     const interval = setInterval(() => {
       loadOrdersLocal();
     }, 30000);
 
-    // Cleanup function para limpiar el interval
+   
     return () => clearInterval(interval);
   }, []);
 
@@ -134,14 +134,14 @@ export default function AdminHome() {
           role: newUser.role
         };
         
-        // Llamada a la API real
+        // Llamada a la API 
         const createdUser = await userAPI.createUser(userToAdd);
         
         // Actualizar el estado local con el usuario creado
         setUsers([...users, createdUser]);
         setNewUser({ username: "", password: "", role: "user", email: "" });
         
-        console.log("Usuario creado exitosamente:", createdUser);
+     
         alert("Usuario creado exitosamente");
       } catch (error) {
         console.error("Error al crear usuario:", error);
@@ -157,13 +157,13 @@ export default function AdminHome() {
     }
     
     try {
-      // Llamada a la API real
+      // Llamada a la API 
       await userAPI.deleteUser(userId);
       
       // Actualizar el estado local
       setUsers(users.filter(user => user.id !== userId));
       
-      console.log("Usuario eliminado exitosamente:", userId);
+      
       alert("Usuario eliminado exitosamente");
     } catch (error) {
       console.error("Error al eliminar usuario:", error);
@@ -182,14 +182,14 @@ export default function AdminHome() {
           descripcion: newPizza.descripcion
         };
         
-        // Llamada a la API real
+        // Llamada a la API 
         const createdPizza = await pizzaAPI.createPizza(pizzaToAdd);
         
         // Actualizar el estado local con la pizza creada
         setPizzas([...pizzas, createdPizza]);
         setNewPizza({ nombre: "", precio: "", descripcion: "" });
         
-        console.log("Pizza creada exitosamente:", createdPizza);
+      
         alert("Pizza agregada exitosamente");
       } catch (error) {
         console.error("Error al crear pizza:", error);
@@ -200,13 +200,13 @@ export default function AdminHome() {
 
   const handleDeletePizza = async (pizzaId) => {
     try {
-      // Llamada a la API real
+      // Llamada a la API 
       await pizzaAPI.deletePizza(pizzaId);
       
       // Actualizar el estado local
       setPizzas(pizzas.filter(pizza => pizza.id !== pizzaId));
       
-      console.log("Pizza eliminada exitosamente:", pizzaId);
+      
       alert("Pizza eliminada exitosamente");
     } catch (error) {
       console.error("Error al eliminar pizza:", error);
@@ -222,7 +222,7 @@ export default function AdminHome() {
       setPedidos(ordersFromAPI);
     } catch (error) {
       console.error("Error al cargar pedidos:", error);
-      // Fallback a datos locales si la API falla
+  
       setPedidos(pedidosData.map(pedido => ({
         ...pedido,
         status: pedido.status || "pendiente"
@@ -234,7 +234,7 @@ export default function AdminHome() {
 
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     try {
-      // Llamada a la API real para actualizar el estado
+      // Llamada a la API  para actualizar el estado
       const updatedOrder = await orderAPI.updateOrderStatus(orderId, newStatus);
       
       // Actualizar el estado local con la respuesta de la API
@@ -244,8 +244,7 @@ export default function AdminHome() {
           : pedido
       ));
       
-      console.log(`Pedido ${orderId} actualizado a ${newStatus} exitosamente`);
-      
+  
       // Mostrar mensaje de éxito
       const statusMessages = {
         'aceptado': 'Pedido aceptado exitosamente',

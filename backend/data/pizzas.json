@@ -61,5 +61,14 @@
     "categoria": "general",
     "disponible": true,
     "createdAt": "2025-07-08T19:47:58.732Z"
+  },
+  {
+    "id": 9,
+    "nombre": "ddd",
+    "precio": 2,
+    "descripcion": "2",
+    "categoria": "general",
+    "disponible": true,
+    "createdAt": "2025-07-08T21:19:08.770Z"
   }
 ]

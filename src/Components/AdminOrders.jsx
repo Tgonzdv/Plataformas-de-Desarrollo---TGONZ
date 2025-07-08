@@ -10,13 +10,13 @@ export default function AdminOrders({
   const [updatingOrders, setUpdatingOrders] = useState(new Set());
 
   const handleStatusUpdate = async (orderId, newStatus) => {
-    // Agregar el pedido al set de pedidos que se están actualizando
+    
     setUpdatingOrders(prev => new Set(prev).add(orderId));
     
     try {
       await handleUpdateOrderStatus(orderId, newStatus);
     } finally {
-      // Remover el pedido del set de pedidos que se están actualizando
+    
       setUpdatingOrders(prev => {
         const newSet = new Set(prev);
         newSet.delete(orderId);
