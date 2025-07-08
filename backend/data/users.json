@@ -46,5 +46,13 @@
     "email": "jorge123@gmail.com",
     "role": "user",
     "createdAt": "2025-07-08T19:55:41.311Z"
+  },
+  {
+    "id": 8,
+    "username": "nuevo",
+    "password": "$2a$10$yeo9lrPTouWEunI2wimJ4.Il7H7NK.hk8OB33Ct4vnxDKcujQYKJK",
+    "email": "nuevo@gmail.com",
+    "role": "user",
+    "createdAt": "2025-07-08T20:27:49.493Z"
   }
 ]

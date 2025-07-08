@@ -6,6 +6,7 @@ import pizzasData from "../Json/pizzas.json";
 import pedidosData from "../Json/pedidos.json";
 import { pizzaAPI } from "../services/pizzaAPI";
 import { userAPI } from "../services/userAPI";
+import { orderAPI } from "../services/orderAPI";
 import AdminDashboard from "../Components/AdminDashboard";
 import AdminUsers from "../Components/AdminUsers";
 import AdminPizzas from "../Components/AdminPizzas";
@@ -29,10 +30,8 @@ export default function AdminHome() {
   const [loadingPizzas, setLoadingPizzas] = useState(false);
   
   // Estados para pedidos
-  const [pedidos, setPedidos] = useState(pedidosData.map(pedido => ({
-    ...pedido,
-    status: pedido.status || "pendiente"
-  })));
+  const [pedidos, setPedidos] = useState([]);
+  const [loadingOrders, setLoadingOrders] = useState(false);
 
   useEffect(() => {
     // Verificar si el usuario está autenticado y es admin
@@ -83,6 +82,37 @@ export default function AdminHome() {
     };
 
     loadUsers();
+  }, []);
+
+  // Cargar pedidos desde la API
+  useEffect(() => {
+    const loadOrdersLocal = async () => {
+      try {
+        setLoadingOrders(true);
+        const ordersFromAPI = await orderAPI.getOrders();
+        setPedidos(ordersFromAPI);
+      } catch (error) {
+        console.error("Error al cargar pedidos:", error);
+        // Fallback a datos locales si la API falla
+        setPedidos(pedidosData.map(pedido => ({
+          ...pedido,
+          status: pedido.status || "pendiente"
+        })));
+      } finally {
+        setLoadingOrders(false);
+      }
+    };
+
+    // Cargar pedidos inmediatamente
+    loadOrdersLocal();
+
+    // Configurar actualización automática cada 30 segundos
+    const interval = setInterval(() => {
+      loadOrdersLocal();
+    }, 30000);
+
+    // Cleanup function para limpiar el interval
+    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
@@ -185,13 +215,51 @@ export default function AdminHome() {
   };
 
   // Funciones para pedidos
-  const handleUpdateOrderStatus = (orderId, newStatus) => {
-    setPedidos(pedidos.map(pedido => 
-      pedido.orderId === orderId 
-        ? { ...pedido, status: newStatus }
-        : pedido
-    ));
-    console.log(`Pedido ${orderId} actualizado a ${newStatus}`);
+  const loadOrders = async () => {
+    try {
+      setLoadingOrders(true);
+      const ordersFromAPI = await orderAPI.getOrders();
+      setPedidos(ordersFromAPI);
+    } catch (error) {
+      console.error("Error al cargar pedidos:", error);
+      // Fallback a datos locales si la API falla
+      setPedidos(pedidosData.map(pedido => ({
+        ...pedido,
+        status: pedido.status || "pendiente"
+      })));
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
+  const handleUpdateOrderStatus = async (orderId, newStatus) => {
+    try {
+      // Llamada a la API real para actualizar el estado
+      const updatedOrder = await orderAPI.updateOrderStatus(orderId, newStatus);
+      
+      // Actualizar el estado local con la respuesta de la API
+      setPedidos(pedidos.map(pedido => 
+        pedido.id === orderId 
+          ? { ...pedido, status: newStatus, updatedAt: updatedOrder.updatedAt }
+          : pedido
+      ));
+      
+      console.log(`Pedido ${orderId} actualizado a ${newStatus} exitosamente`);
+      
+      // Mostrar mensaje de éxito
+      const statusMessages = {
+        'aceptado': 'Pedido aceptado exitosamente',
+        'cancelado': 'Pedido cancelado exitosamente',
+        'en_preparacion': 'Pedido marcado como en preparación',
+        'entregado': 'Pedido marcado como entregado'
+      };
+      
+      alert(statusMessages[newStatus] || `Estado actualizado a ${newStatus}`);
+      
+    } catch (error) {
+      console.error("Error al actualizar el estado del pedido:", error);
+      alert("Error al actualizar el estado del pedido: " + error.message);
+    }
   };
 
   // Función para obtener el nombre del usuario por ID
@@ -240,6 +308,8 @@ export default function AdminHome() {
             pedidos={pedidos}
             getUsernameById={getUsernameById}
             handleUpdateOrderStatus={handleUpdateOrderStatus}
+            loadingOrders={loadingOrders}
+            onRefresh={loadOrders}
           />
         );
       default:

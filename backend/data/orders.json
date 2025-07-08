@@ -11,9 +11,10 @@
       }
     ],
     "total": 300000,
-    "status": "pendiente",
+    "status": "en_preparacion",
     "fecha": "2025-06-13T00:00:00.000Z",
-    "createdAt": "2025-06-13T00:00:00.000Z"
+    "createdAt": "2025-06-13T00:00:00.000Z",
+    "updatedAt": "2025-07-08T20:26:51.707Z"
   },
   {
     "id": 2,
@@ -33,9 +34,10 @@
       }
     ],
     "total": 330000,
-    "status": "aceptado",
+    "status": "entregado",
     "fecha": "2025-06-12T00:00:00.000Z",
-    "createdAt": "2025-06-12T00:00:00.000Z"
+    "createdAt": "2025-06-12T00:00:00.000Z",
+    "updatedAt": "2025-07-08T20:26:07.315Z"
   },
   {
     "id": 3,
