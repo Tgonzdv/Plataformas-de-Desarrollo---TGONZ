@@ -4,6 +4,7 @@ import favoritosData from "../Json/favoritos.json";
 import PizzasData from "../Json/pizzas.json";
 import carritoData from "../Json/carrito.json";
 import { pizzaAPI } from "../services/pizzaAPI";
+import { favoritesAPI } from "../services/favoritesAPI";
 import Pizzas from '../Components/pizzas';
 import Favoritos from '../Components/favoritos';
 import Cart from '../Components/cart';
@@ -41,11 +42,34 @@ export default function UserHome() {
     loadPizzas();
   }, []);
 
-  // Filtrar por userid 2 que es cliente Jorge
-  const user = favoritosData.find(u => u.user_id === 2);
+  // Cargar favoritos desde la API
+  useEffect(() => {
+    const loadFavorites = async () => {
+      try {
+        setLoadingFavorites(true);
+        const favoritesResponse = await favoritesAPI.getFavorites();
+        const favoritePizzaIds = favoritesResponse.favorites?.pizzaIds || [];
+        const favoritePizzasData = favoritesResponse.pizzas || [];
+        
+        setFavoritos(favoritePizzaIds);
+        setFavoritePizzas(favoritePizzasData);
+      } catch (error) {
+        console.error("Error al cargar favoritos:", error);
+        // En caso de error, inicializar como arrays vacíos
+        setFavoritos([]);
+        setFavoritePizzas([]);
+      } finally {
+        setLoadingFavorites(false);
+      }
+    };
+
+    loadFavorites();
+  }, []);
 
   // Estados
-  const [favoritos, setFavoritos] = useState(user?.favoritos || []);
+  const [favoritos, setFavoritos] = useState([]);
+  const [favoritePizzas, setFavoritePizzas] = useState([]);
+  const [loadingFavorites, setLoadingFavorites] = useState(false);
   // Buscar el carrito del usuario con user_id 2
   const userCarrito = Array.isArray(carritoData)
     ? carritoData.find(u => u.user_id === 2)
@@ -54,26 +78,45 @@ export default function UserHome() {
   const [pizzas, setPizzas] = useState(PizzasData);
   const [loadingPizzas, setLoadingPizzas] = useState(false);
 
-  // Simulación de guardar/eliminar favoritos en JSON
-  const guardarFavoritosEnJson = (nuevosFavoritos) => {
-    // Aquí iría la lógica real para guardar en backend o localStorage
-    console.log("Favoritos guardados en JSON:", nuevosFavoritos);
-  };
-
   // Función para agregar a favoritos
-  const handleAgregarFavorito = (nombre) => {
-    if (!favoritos.includes(nombre)) {
-      const nuevosFavoritos = [...favoritos, nombre];
-      setFavoritos(nuevosFavoritos);
-      guardarFavoritosEnJson(nuevosFavoritos);
+  const handleAgregarFavorito = async (pizzaId) => {
+    try {
+      await favoritesAPI.addToFavorites(pizzaId);
+      
+      // Actualizar estado local
+      const newFavoritos = [...favoritos, pizzaId];
+      setFavoritos(newFavoritos);
+      
+      // Encontrar la pizza y agregarla a favoritePizzas
+      const pizza = pizzas.find(p => p.id === pizzaId);
+      if (pizza) {
+        setFavoritePizzas(prev => [...prev, pizza]);
+      }
+      
+      console.log("Pizza agregada a favoritos exitosamente");
+    } catch (error) {
+      console.error("Error al agregar a favoritos:", error);
+      alert("Error al agregar a favoritos: " + error.message);
     }
   };
 
   // Función para eliminar de favoritos
-  const handleEliminarFavorito = (nombre) => {
-    const nuevosFavoritos = favoritos.filter(fav => fav !== nombre);
-    setFavoritos(nuevosFavoritos);
-    guardarFavoritosEnJson(nuevosFavoritos);
+  const handleEliminarFavorito = async (pizzaId) => {
+    try {
+      await favoritesAPI.removeFromFavorites(pizzaId);
+      
+      // Actualizar estado local
+      const newFavoritos = favoritos.filter(id => id !== pizzaId);
+      setFavoritos(newFavoritos);
+      
+      // Remover de favoritePizzas
+      setFavoritePizzas(prev => prev.filter(p => p.id !== pizzaId));
+      
+      console.log("Pizza eliminada de favoritos exitosamente");
+    } catch (error) {
+      console.error("Error al eliminar de favoritos:", error);
+      alert("Error al eliminar de favoritos: " + error.message);
+    }
   };
   const handleRemoveCarrito = (id) => {
     setCarrito(carrito.filter(item => item.id !== id));
@@ -112,7 +155,7 @@ export default function UserHome() {
           <div className="userhome-main">
             <div className="userhome-left">
             <h2 className="userhome-title">
-              Bienvenido, Jorge , a tu tienda de Pizzas favorita
+              Bienvenido, {currentUser?.nombre || 'Usuario'}, a tu tienda de Pizzas favorita
             </h2>
          
          
@@ -121,6 +164,7 @@ export default function UserHome() {
               pizzas={pizzas}
               favoritos={favoritos}
               onAgregarFavorito={handleAgregarFavorito}
+              onEliminarFavorito={handleEliminarFavorito}
               onAgregarCarrito={handleAgregarCarrito}
               loadingPizzas={loadingPizzas}
             />
@@ -131,9 +175,10 @@ export default function UserHome() {
 
 
             <Favoritos
-              favoritos={favoritos}
+              favoritos={favoritePizzas}
               onEliminarFavorito={handleEliminarFavorito}
               pizzas={pizzas}
+              loadingFavorites={loadingFavorites}
             />
 
 

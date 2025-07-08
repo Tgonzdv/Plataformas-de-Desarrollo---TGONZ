@@ -5,6 +5,7 @@ export default function Pizzas({
   pizzas = [], 
   favoritos = [], 
   onAgregarFavorito, 
+  onEliminarFavorito,
   onAgregarCarrito,
   loadingPizzas = false 
 }) {
@@ -31,10 +32,10 @@ export default function Pizzas({
     return (
         <div className="pizzas-container">
             {pizzas.map((pizza) => {
-                const isFavorito = favoritos.includes(pizza.nombre);
+                const isFavorito = favoritos.includes(pizza.id);
                 return (
                     <div
-                        key={pizza.nombre}
+                        key={pizza.id}
                         className="pizza-card"
                     >
                         <h4 className="pizza-title">
@@ -54,11 +55,16 @@ export default function Pizzas({
                         </button>
                         <br />
                         <button
-                            onClick={() => !isFavorito && onAgregarFavorito(pizza.nombre)}
-                            disabled={isFavorito}
+                            onClick={() => {
+                                if (isFavorito) {
+                                    onEliminarFavorito(pizza.id);
+                                } else {
+                                    onAgregarFavorito(pizza.id);
+                                }
+                            }}
                             className={`pizza-btn-favorito${isFavorito ? " favorito" : ""}`}
                         >
-                            {isFavorito ? "Agregado" : "Agregar a Favoritos"}
+                            {isFavorito ? "Quitar de Favoritos" : "Agregar a Favoritos"}
                         </button>
                     </div>
                 );

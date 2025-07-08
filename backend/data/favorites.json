@@ -2,7 +2,20 @@
   {
     "id": 1,
     "userId": 2,
-    "pizzaIds": [1, 2, 5],
+    "pizzaIds": [
+      5,
+      8
+    ],
     "createdAt": "2024-07-08T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "userId": 6,
+    "pizzaIds": [
+      8,
+      3,
+      4
+    ],
+    "createdAt": "2025-07-08T20:11:45.011Z"
   }
 ]

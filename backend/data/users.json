@@ -46,13 +46,5 @@
     "email": "jorge123@gmail.com",
     "role": "user",
     "createdAt": "2025-07-08T19:55:41.311Z"
-  },
-  {
-    "id": 8,
-    "username": "juan1",
-    "password": "$2a$10$5zCrsweBy4bAScktOQkG5udL54JQvNCYGknQ7e.hthWqyPm62UyQ2",
-    "email": "juan1@gmail.com",
-    "role": "user",
-    "createdAt": "2025-07-08T20:01:17.024Z"
   }
 ]
